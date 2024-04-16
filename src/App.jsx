@@ -1,14 +1,22 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/es/integration/react";
-import store, { persistor } from "./redux/store";
+import React, { useEffect } from "react";
+import { Provider, useDispatch } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store"; // Змінено імпорт
+
 import "./App.css";
 
 import ContactForm from "./components/ContactForm/ContactForm";
 import ContactList from "./components/ContactList/ContactList";
-import Contact from "./components/Contact/Contact";
+import SearchBox from "./components/SearchBox/SearchBox";
+import { fetchContacts } from "./redux/contactsOps"; // Імпорт операції fetchContacts
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts()); // Запуск операції fetchContacts при завантаженні компоненту
+  }, [dispatch]);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -16,8 +24,8 @@ const App = () => {
           <h1>Книга контактів</h1>
           <div className="container">
             <ContactForm />
+            <SearchBox />
             <ContactList />
-            <Contact />
           </div>
         </div>
       </PersistGate>

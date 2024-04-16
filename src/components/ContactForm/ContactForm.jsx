@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/contactsOps"; // Змінено імпорт
 import { nanoid } from "nanoid";
 import "./ContactForm.css";
 

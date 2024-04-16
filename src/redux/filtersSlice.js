@@ -1,8 +1,7 @@
-// filtersSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  term: "", // Початкове значення поля term
+  term: "",
 };
 
 const filtersSlice = createSlice({
@@ -10,7 +9,7 @@ const filtersSlice = createSlice({
   initialState,
   reducers: {
     setFilter: (state, action) => {
-      state.term = action.payload.term; // Оновлення поля term
+      state.term = action.payload.term;
     },
   },
 });

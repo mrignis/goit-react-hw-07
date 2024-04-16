@@ -10,30 +10,27 @@ const ContactList = () => {
     selectFilteredContacts(state, nameFilter)
   );
 
-  const handleChange = (value) => {
-    setNameFilter(value); // Оновлення значення фільтра
+  const handleChange = (e) => {
+    setNameFilter(e.target.value); // Оновлення значення фільтра
   };
 
   return (
-    <div className={styles["contact-list"]}>
-      {" "}
+    <div className={styles.contactList}>
       {/* Використовуємо клас стилів для контейнера */}
       <input
         className={styles.searchInput} // Використовуємо клас стилів для поля пошуку
         type="text"
         value={nameFilter}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={handleChange}
         placeholder="Search..."
       />
-      <ul>
-        {filteredContacts &&
-          filteredContacts.map((contact) => (
-            <li key={contact.id} className={styles["contact-item"]}>
-              {" "}
-              {/* Використовуємо клас стилів для елементів */}
-              <Contact contact={contact} />
-            </li>
-          ))}
+      <ul className={styles.contactItems}>
+        {filteredContacts.map((contact) => (
+          <li key={contact.id} className={styles.contactItem}>
+            {/* Використовуємо клас стилів для елементів */}
+            <Contact contact={contact} />
+          </li>
+        ))}
       </ul>
     </div>
   );

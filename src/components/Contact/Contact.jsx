@@ -1,7 +1,6 @@
-// Contact.jsx
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsSlice";
+import { deleteContact } from "../../redux/contactsOps"; // Змінено імпорт
 import "./Contact.css"; // Імпортуйте CSS файл
 
 const Contact = ({ contact }) => {

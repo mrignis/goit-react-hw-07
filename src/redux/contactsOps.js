@@ -1,16 +1,55 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
+import {
+  createAsyncThunk,
+  createSlice,
+  createSelector,
+} from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = {
-  items: [],
-  loading: false,
-  error: null,
-};
+axios.defaults.baseURL = "https://661eba0616358961cd92b193.mockapi.iot";
+
+export const fetchContacts = createAsyncThunk(
+  "contacts/fetchAll",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get("/contacts");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  "contacts/addContact",
+  async (contact, thunkAPI) => {
+    try {
+      const response = await axios.post("/contacts", contact);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  "contacts/deleteContact",
+  async (contactId, thunkAPI) => {
+    try {
+      await axios.delete(`/contacts/${contactId}`);
+      return contactId;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 const contactsSlice = createSlice({
   name: "contacts",
-  initialState,
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
