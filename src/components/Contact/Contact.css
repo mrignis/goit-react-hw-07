@@ -1,0 +1,30 @@
+/* Contact.css */
+
+.contact {display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.contact h3 {
+    margin: 5px;
+}
+
+.contact p {
+    margin: 5px;
+}
+
+.contact button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.contact button:hover {
+    background-color: #d32f2f;
+}
