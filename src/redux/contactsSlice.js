@@ -1,6 +1,6 @@
+// contactsSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
+import { fetchContacts, addContact, deleteContact } from "./contactsOps"; // Змінено імпорт
 
 const initialState = {
   items: [],
@@ -13,10 +13,12 @@ const contactsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAll.rejected, (state, action) => {
+      .addCase(fetchContacts.rejected, (state, action) => {
+        // Змінено fetchAll на fetchContacts
         state.error = action.error.message;
       })
-      .addCase(fetchAll.fulfilled, (state, action) => {
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        // Змінено fetchAll на fetchContacts
         state.error = null;
         state.items = action.payload;
       })

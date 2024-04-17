@@ -1,47 +1,44 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://661eba0616358961cd92b193.mockapi.io"; // Встановлюємо ваш API endpoint як базовий URL
+axios.defaults.baseURL = "https://661eba0616358961cd92b193.mockapi.io";
 
-// Оголошуємо операцію для отримання масиву контактів
 export const fetchContacts = createAsyncThunk(
-  "contacts/fetchAll", // Базовий тип екшену
+  "contacts/fetchAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("/contacts"); // Виконуємо GET запит для отримання контактів
-      return response.data; // Повертаємо дані контактів
+      const response = await axios.get("/contacts");
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message); // Повертаємо помилку разом з повідомленням
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// Оголошуємо операцію для додавання нового контакту
 export const addContact = createAsyncThunk(
-  "contacts/addContact", // Базовий тип екшену
+  "contacts/addContact",
   async (contact, thunkAPI) => {
     try {
-      const response = await axios.post("/contacts", contact); // Виконуємо POST запит для додавання контакту
-      return response.data; // Повертаємо дані нового контакту
+      const response = await axios.post("/contacts", contact);
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message); // Повертаємо помилку разом з повідомленням
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
-// Оголошуємо операцію для видалення контакту за ID
 export const deleteContact = createAsyncThunk(
-  "contacts/deleteContact", // Базовий тип екшену
+  "contacts/deleteContact",
   async (contactId, thunkAPI) => {
     try {
-      await axios.delete(`/contacts/${contactId}`); // Виконуємо DELETE запит для видалення контакту
-      return contactId; // Повертаємо ID видаленого контакту
+      const response = await axios.delete(`/contacts/${contactId}`);
+      console.log(contactId);
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message); // Повертаємо помилку разом з повідомленням
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
-
 export const getContacts = (state) => state.contacts.items;
 
 export const getFilter = (state) => state.filter;
@@ -49,9 +46,16 @@ export const getFilter = (state) => state.filter;
 export const getVisibleContacts = (state) => {
   const contacts = getContacts(state);
   const filter = getFilter(state);
+
+  if (!filter) {
+    return contacts;
+  }
+
   const normalizedFilter = filter.toLowerCase();
 
-  return contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(normalizedFilter)
+  return contacts.filter(
+    (contact) =>
+      contact.name.toLowerCase().includes(normalizedFilter) ||
+      contact.phoneNumber.includes(filter)
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps"; // Змінено імпорт
-import "./Contact.css"; // Імпортуйте CSS файл
+import { deleteContact } from "../../redux/contactsOps";
+import "./Contact.css";
 
 const Contact = ({ contact }) => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Contact = ({ contact }) => {
   return (
     <div className="contact">
       <h3>{contact.name}</h3>
-      <p>{contact.phone}</p>
+      <p>{contact.phoneNumber}</p>
       <button onClick={handleDelete}>Delete</button>
     </div>
   );
