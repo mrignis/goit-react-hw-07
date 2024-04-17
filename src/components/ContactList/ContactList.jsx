@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectFilteredContacts } from "../../redux/contactsSlice";
+import { selectFilteredContacts } from "../../redux/contactsOps";
+
 import Contact from "../Contact/Contact";
-import styles from "./ContactList.module.css"; // Імпортуємо стилі
+import styles from "./ContactList.module.css";
 
 const ContactList = () => {
-  const [nameFilter, setNameFilter] = useState(""); // Локальний стан для фільтра
+  const [nameFilter, setNameFilter] = useState("");
   const filteredContacts = useSelector((state) =>
     selectFilteredContacts(state, nameFilter)
-  );
+  ); // Виправлення передачі аргументів в селектор
 
   const handleChange = (e) => {
-    setNameFilter(e.target.value); // Оновлення значення фільтра
+    setNameFilter(e.target.value);
   };
 
   return (
     <div className={styles.contactList}>
-      {/* Використовуємо клас стилів для контейнера */}
       <input
-        className={styles.searchInput} // Використовуємо клас стилів для поля пошуку
+        className={styles.searchInput}
         type="text"
         value={nameFilter}
         onChange={handleChange}
@@ -27,7 +27,6 @@ const ContactList = () => {
       <ul className={styles.contactItems}>
         {filteredContacts.map((contact) => (
           <li key={contact.id} className={styles.contactItem}>
-            {/* Використовуємо клас стилів для елементів */}
             <Contact contact={contact} />
           </li>
         ))}
