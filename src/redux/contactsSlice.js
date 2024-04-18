@@ -14,11 +14,9 @@ const contactsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.rejected, (state, action) => {
-        // Змінено fetchAll на fetchContacts
         state.error = action.error.message;
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        // Змінено fetchAll на fetchContacts
         state.error = null;
         state.items = action.payload;
       })
@@ -33,9 +31,7 @@ const contactsSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
-        state.items = state.items.filter(
-          (item) => item.id !== action.payload.id
-        );
+        state.items = state.items.filter((item) => item.id !== action.payload); // Виправлено на action.payload
         state.error = null;
       });
   },

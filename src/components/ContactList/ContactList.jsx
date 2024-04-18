@@ -1,46 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getVisibleContacts,
-  fetchContacts,
-  addContact,
-  deleteContact,
-} from "../../redux/contactsOps";
-
+import { deleteContact } from "../../redux/contactsOps";
 import Contact from "../Contact/Contact";
+import { selectNameFilter } from "../../redux/filtersSlice";
+
 import styles from "./ContactList.module.css";
 
 const ContactList = () => {
-  const [nameFilter, setNameFilter] = useState("");
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => getVisibleContacts(state));
+  const nameFilter = useSelector(selectNameFilter);
+  const contacts = useSelector((state) => state.contacts.items);
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  const handleChange = (e) => {
-    setNameFilter(e.target.value);
-  };
-
-  const handleAddContact = (newContact) => {
-    dispatch(addContact(newContact));
-  };
+  const filteredContacts = contacts.filter(
+    (contact) =>
+      contact.name.toLowerCase().includes(nameFilter.toLowerCase()) ||
+      contact.phoneNumber.includes(nameFilter)
+  );
 
   const handleDeleteContact = (contactId) => {
     dispatch(deleteContact(contactId));
   };
-
-  // Функція для фільтрації контактів за ім'ям або номером
-  const filteredContacts = contacts.filter((contact) => {
-    const normalizedFilter = nameFilter.toLowerCase();
-    const normalizedName = contact.name.toLowerCase();
-    const normalizedNumber = contact.number.toLowerCase();
-    return (
-      normalizedName.includes(normalizedFilter) ||
-      normalizedNumber.includes(normalizedFilter)
-    );
-  });
 
   return (
     <div className={styles.contactList}>
@@ -48,8 +27,8 @@ const ContactList = () => {
         className={styles.searchInput}
         type="text"
         value={nameFilter}
-        onChange={handleChange}
         placeholder="Search..."
+        readOnly // Забороняє введення тексту у поле
       />
       <ul className={styles.contactItems}>
         {filteredContacts.map((contact) => (

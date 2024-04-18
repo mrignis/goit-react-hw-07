@@ -1,7 +1,6 @@
 // App.jsx
 import React, { useEffect } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { store } from "./redux/store";
+import { useDispatch } from "react-redux";
 import { fetchContacts } from "./redux/contactsOps";
 import ContactForm from "./components/ContactForm/ContactForm";
 import ContactList from "./components/ContactList/ContactList";
@@ -14,13 +13,11 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Provider store={store}>
-      <div className="app">
-        <h1>Contacts App</h1>
-        <ContactForm />
-        <ContactList />
-      </div>
-    </Provider>
+    <div className="app">
+      <h1>Contacts App</h1>
+      <ContactForm />
+      <ContactList />
+    </div>
   );
 };
 

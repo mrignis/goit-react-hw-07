@@ -32,30 +32,9 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkAPI) => {
     try {
       const response = await axios.delete(`/contacts/${contactId}`);
-      console.log(contactId);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
-export const getContacts = (state) => state.contacts.items;
-
-export const getFilter = (state) => state.filter;
-
-export const getVisibleContacts = (state) => {
-  const contacts = getContacts(state);
-  const filter = getFilter(state);
-
-  if (!filter) {
-    return contacts;
-  }
-
-  const normalizedFilter = filter.toLowerCase();
-
-  return contacts.filter(
-    (contact) =>
-      contact.name.toLowerCase().includes(normalizedFilter) ||
-      contact.phoneNumber.includes(filter)
-  );
-};
