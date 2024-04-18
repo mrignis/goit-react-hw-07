@@ -1,34 +1,37 @@
-import React from "react";
+// ContactList.jsx
+
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/contactsOps";
 import Contact from "../Contact/Contact";
-import { selectNameFilter } from "../../redux/filtersSlice";
+import { selectFilteredContacts } from "../../redux/contactsSlice";
+import { changeFilter } from "../../redux/filtersSlice";
 
 import styles from "./ContactList.module.css";
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const nameFilter = useSelector(selectNameFilter);
-  const contacts = useSelector((state) => state.contacts.items);
-
-  const filteredContacts = contacts.filter(
-    (contact) =>
-      contact.name.toLowerCase().includes(nameFilter.toLowerCase()) ||
-      contact.phoneNumber.includes(nameFilter)
-  );
+  const filteredContacts = useSelector(selectFilteredContacts);
+  const [searchTerm, setSearchTerm] = useState(""); // Додайте локальний стан для зберігання значення пошукового терміна
 
   const handleDeleteContact = (contactId) => {
     dispatch(deleteContact(contactId));
   };
 
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value); // Оновлюємо значення пошукового терміна
+    dispatch(changeFilter({ name: value })); // Диспетчеризуємо дію зміни фільтра
+  };
+
   return (
     <div className={styles.contactList}>
       <input
-        className={styles.searchInput}
         type="text"
-        value={nameFilter}
-        placeholder="Search..."
-        readOnly // Забороняє введення тексту у поле
+        value={searchTerm}
+        onChange={handleSearch}
+        placeholder="Search contacts..."
+        className={styles.searchInput}
       />
       <ul className={styles.contactItems}>
         {filteredContacts.map((contact) => (
