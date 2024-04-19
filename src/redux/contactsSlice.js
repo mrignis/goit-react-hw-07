@@ -41,10 +41,15 @@ const contactsSlice = createSlice({
 export const selectContacts = (state) => state.contacts.items;
 export const selectNameFilter = (state) => state.filters.nameFilter;
 
-// Вибірка всіх контактів без фільтрації
+// Переписуємо селектор, щоб фільтрувати контакти за іменем
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectNameFilter],
-  (contacts, nameFilter) => contacts
+  (contacts, nameFilter) => {
+    // Фільтруємо контакти за іменем, включаючи тільки ті, які відповідають фільтру
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(nameFilter.toLowerCase())
+    );
+  }
 );
 
 const { reducer: contactsReducer } = contactsSlice;

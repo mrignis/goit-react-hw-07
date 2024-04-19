@@ -25,11 +25,6 @@ const ContactList = () => {
     dispatch(fetchContacts()); // Отримуємо контакти знову з урахуванням нового фільтру
   };
 
-  // Фільтруємо контакти за іменем
-  const filteredContactsByName = filteredContacts.filter((contact) =>
-    contact.name.toLowerCase().includes(nameFilter.toLowerCase())
-  );
-
   return (
     <div className={styles.contactList}>
       <input
@@ -40,7 +35,7 @@ const ContactList = () => {
         className={styles.searchInput}
       />
       <ul className={styles.contactItems}>
-        {filteredContactsByName.map((contact) => (
+        {filteredContacts.map((contact) => (
           <li key={contact.id} className={styles.contactItem}>
             <Contact contact={contact} onDelete={handleDeleteContact} />
           </li>
