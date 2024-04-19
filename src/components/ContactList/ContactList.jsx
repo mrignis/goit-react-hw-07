@@ -13,8 +13,9 @@ const ContactList = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
+    // Викликаємо функцію отримання контактів при зміні searchTerm
     dispatch(fetchContacts());
-  }, [dispatch]);
+  }, [dispatch, searchTerm]);
 
   const handleDeleteContact = (contactId) => {
     dispatch(deleteContact(contactId));
@@ -38,10 +39,7 @@ const ContactList = () => {
       <ul className={styles.contactItems}>
         {filteredContacts.map((contact) => (
           <li key={contact.id} className={styles.contactItem}>
-            <Contact
-              contact={contact}
-              onDelete={handleDeleteContact} // Передача пропа onDelete
-            />
+            <Contact contact={contact} onDelete={handleDeleteContact} />
           </li>
         ))}
       </ul>

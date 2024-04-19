@@ -1,7 +1,47 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect"; // Додано імпорт
+// contactsSlice.js
 
-import { fetchContacts, addContact, deleteContact } from "./contactsOps";
+import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://661eba0616358961cd92b193.mockapi.io";
+
+export const fetchContacts = createAsyncThunk(
+  "contacts/fetchAll",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get("/contacts");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  "contacts/addContact",
+  async (contact, thunkAPI) => {
+    try {
+      const response = await axios.post("/contacts", contact);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  "contacts/deleteContact",
+  async (contactId, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/contacts/${contactId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 const initialState = {
   items: [],
@@ -41,23 +81,11 @@ const contactsSlice = createSlice({
 export const selectContacts = (state) => state.contacts.items;
 export const selectNameFilter = (state) => state.filters.nameFilter;
 
+// Вибираємо всі контакти без фільтрації
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectNameFilter],
-  (contacts, nameFilter) => {
-    const filterText = nameFilter ? nameFilter.toLowerCase() : "";
-    return nameFilter
-      ? contacts.filter(
-          (contact) =>
-            contact.name.toLowerCase().includes(filterText) ||
-            contact.phoneNumber.includes(filterText)
-        )
-      : contacts;
-  }
+  (contacts, nameFilter) => contacts
 );
-
-export const selectIsLoading = (state) => state.contacts.isLoading;
-export const selectError = (state) => state.contacts.error;
-export const selectFilter = (state) => state.filter;
 
 const { reducer: contactsReducer } = contactsSlice;
 export default contactsReducer;

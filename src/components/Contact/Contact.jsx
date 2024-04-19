@@ -18,7 +18,7 @@ const Contact = ({ contact }) => {
     <div className="contact">
       <h3>{contact.name}</h3>
       <p>{contact.phoneNumber}</p>
-      <button onClick={handleDelete}>Delete</button> {/* Виправлено */}
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };
