@@ -1,43 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteContact, fetchContacts } from "../../redux/contactsOps";
 import Contact from "../Contact/Contact";
 import { selectFilteredContacts } from "../../redux/contactsSlice";
 import { changeFilter } from "../../redux/filtersSlice";
+import { selectNameFilter } from "../../redux/filtersSlice"; // Імпорт селектора для отримання значення фільтру
 
 import styles from "./ContactList.module.css";
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const filteredContacts = useSelector(selectFilteredContacts);
+  const nameFilter = useSelector(selectNameFilter); // Отримання значення фільтру по імені
   const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    // Викликаємо функцію отримання контактів при зміні searchTerm
-    dispatch(fetchContacts());
-  }, [dispatch, searchTerm]);
 
   const handleDeleteContact = (contactId) => {
     dispatch(deleteContact(contactId));
   };
 
-  const handleSearch = (e) => {
+  const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    dispatch(changeFilter({ name: value }));
+    dispatch(changeFilter({ name: value })); // Встановлюємо фільтр в Redux store
+    dispatch(fetchContacts()); // Отримуємо контакти знову з урахуванням нового фільтру
   };
+
+  // Фільтруємо контакти за іменем
+  const filteredContactsByName = filteredContacts.filter((contact) =>
+    contact.name.toLowerCase().includes(nameFilter.toLowerCase())
+  );
 
   return (
     <div className={styles.contactList}>
       <input
         type="text"
         value={searchTerm}
-        onChange={handleSearch}
+        onChange={handleChange} // Викликаємо handleChange при зміні значення поля вводу
         placeholder="Search contacts..."
         className={styles.searchInput}
       />
       <ul className={styles.contactItems}>
-        {filteredContacts.map((contact) => (
+        {filteredContactsByName.map((contact) => (
           <li key={contact.id} className={styles.contactItem}>
             <Contact contact={contact} onDelete={handleDeleteContact} />
           </li>

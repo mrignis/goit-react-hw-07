@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
+  nameFilter: "", // Початкове значення поля nameFilter
 };
 
 const filtersSlice = createSlice({
@@ -9,13 +9,13 @@ const filtersSlice = createSlice({
   initialState,
   reducers: {
     changeFilter: (state, action) => {
-      state.name = action.payload.name;
+      state.nameFilter = action.payload.name;
     },
   },
 });
 
 export const { changeFilter } = filtersSlice.actions;
 
-export const selectNameFilter = (state) => state.filters.name;
+export const selectNameFilter = (state) => state.filters.nameFilter;
 
 export default filtersSlice.reducer;
